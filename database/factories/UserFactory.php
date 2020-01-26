@@ -30,9 +30,9 @@ $factory->define(User::class, function (Faker $faker) {
         'biography'                => $faker->text(128),
         'password'                 => bcrypt('menstagram'),
         'access_token'             => $accessToken,
-        'posted'                   => $faker->numberBetween(1, 999999999),
-        'following'                => $faker->numberBetween(1, 9999999999),
-        'followed'                 => $faker->numberBetween(1, 9999999999),
+        'posted'                   => 0,
+        'following'                => 0,
+        'followed'                 => 0,
         'access_token_deadline_at' => $accessToken ? $faker->dateTimeThisDecade : null,
     ];
 });
