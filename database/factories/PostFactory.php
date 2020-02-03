@@ -11,7 +11,6 @@ use Faker\Generator as Faker;
 $factory->define(Post::class, function (Faker $faker) {
     $imagePath = 'http://placehold.it/300x300';
     $userCount = User::all()->count(); // faker実行回数フルスキャンしてるのでできれば変えたい
-
     return [
         'user_id' => $faker->numberBetween(1, $userCount),
         'text'    => $faker->text(256),

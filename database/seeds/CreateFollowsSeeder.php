@@ -23,7 +23,7 @@ class CreateFollowsSeeder extends Seeder
 
         // フォロー数の整合性
         $users = User::all();
-        foreach($users as $user){
+        foreach($users as $user) {
             $user->following = Follow::where('user_id', $user->id)->count();
             $user->followed = Follow::where('target_user_id', $user->id)->count();
             $user->save();
