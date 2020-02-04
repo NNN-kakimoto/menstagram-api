@@ -2,7 +2,7 @@
 /public/hot
 /public/storage
 /storage/*.key
-!/storage/app/initial/
+!/storage/app/seeds/
 /vendor
 .env
 .env.backup
