@@ -40,7 +40,7 @@ class CreateUsersSeeder extends Seeder
         factory(User::class, 10)->create();
 
         // 画像の削除
-        $this->directoryDelete('public/avatars');
+        $this->deleteDirectory('public/avatars');
 
         // 画像の保存
         $files = Storage::files('seeds/avatars');
@@ -54,7 +54,7 @@ class CreateUsersSeeder extends Seeder
     /**
      * 画像ディレクトリ内の削除
      */
-    protected function directoryDelete($path) {
+    protected function deleteDirectory($path) {
         $deleteFiles = Storage::files($path);
         foreach ($deleteFiles as $key => $file) {
             if ($file == $path.'/.gitkeep') {

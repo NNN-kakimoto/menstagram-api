@@ -30,7 +30,7 @@ class CreatePostsSeeder extends Seeder
         }
 
         // 画像の削除
-        $this->directoryDelete('public/posts');
+        $this->deleteDirectory('public/posts');
 
         // 画像の保存
         $files = Storage::files('seeds/posts');
@@ -57,7 +57,7 @@ class CreatePostsSeeder extends Seeder
     /**
      * 画像ディレクトリ内の削除
      */
-    protected function directoryDelete($path)
+    protected function deleteDirectory($path)
     {
         $deleteFiles = Storage::files($path);
         foreach ($deleteFiles as $key => $file) {
