@@ -12,11 +12,12 @@ use Faker\Generator as Faker;
  */
 $factory->define(Like::class, function (Faker $faker) {
     $userCount = User::all()->count();
+    $postCount = Post::all()->count();
     $userId = $faker->numberBetween(1, $userCount);
-    $postId = $faker->numberBetween(1, Post::all()->count());
-    $like = Like::where('user_id', $userId)->where('post_id', $postId)->first();
+    $postId = $faker->numberBetween(1, $postCount);
+    $like = Like::where('user_id', $userId)->where('post_id', $postId)->first();;
     while (collect($like)->isNotEmpty()) {
-        $postId = $faker->numberBetween(1, $userCount);
+        $postId = $faker->numberBetween(1, $postCount);
         $like = Like::where('user_id', $userId)->where('post_id', $postId)->first();
     }
 

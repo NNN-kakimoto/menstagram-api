@@ -14,8 +14,10 @@ $factory->define(Follow::class, function (Faker $faker) {
 
     $userId = $faker->numberBetween(1, $userCount);
     $targetUserId = $faker->numberBetween(1, $userCount);
-    for (;;) {
-        if ($userId !== $targetUserId) break;
+    while (
+        $userId == $targetUserId ||
+        Follow::where('user_id', $userId)->where('target_user_id', $targetUserId)->exists()
+    ) {
         $targetUserId = $faker->numberBetween(1, $userCount);
     }
 
