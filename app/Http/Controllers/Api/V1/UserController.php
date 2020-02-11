@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserEditAvatarRequest;
 use App\Http\Requests\UserFollowerRequest;
 use App\Http\Requests\UserPostFollowRequest;
 use App\Http\Requests\UserGetFollowRequest;
@@ -70,8 +71,9 @@ class UserController extends Controller
 
     /**
      * ユーザーavatarの変更
+     * @param UserEditAvatarRequest $request
      */
-    public function avatar()
+    public function avatar(UserEditAvatarRequest $request)
     {
         return response('{}', 200);
     }
