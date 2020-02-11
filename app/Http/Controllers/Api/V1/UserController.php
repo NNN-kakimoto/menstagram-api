@@ -69,6 +69,14 @@ class UserController extends Controller
     }
 
     /**
+     * ユーザーavatarの変更
+     */
+    public function avatar()
+    {
+        return response('{}', 200);
+    }
+
+    /**
      * ヤムしたスラープ一覧
      *
      * @param UserYumsRequest $request
