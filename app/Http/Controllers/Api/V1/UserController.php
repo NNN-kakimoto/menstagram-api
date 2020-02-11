@@ -20,6 +20,7 @@ use App\UseCases\FetchUserProfileUseCase;
 use App\UseCases\FollowUseCase;
 use App\UseCases\UnfollowUseCase;
 use App\UseCases\UpdateUserUseCase;
+use App\UseCases\StoreUserAvatarUseCase;
 
 /**
  * ユーザー系API
@@ -72,10 +73,13 @@ class UserController extends Controller
     /**
      * ユーザーavatarの変更
      * @param UserEditAvatarRequest $request
+     * @param StoreUserAvatarUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function avatar(UserEditAvatarRequest $request)
+    public function avatar(UserEditAvatarRequest $request, StoreUserAvatarUseCase $useCase)
     {
-        return response('{}', 200);
+        $response = $useCase($request);
+        return response($response, 200);
     }
 
     /**
