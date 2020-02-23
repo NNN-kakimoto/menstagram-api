@@ -71,15 +71,16 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザーavatarの変更
+     * ユーザーのアバターの変更
+     *
      * @param UserEditAvatarRequest $request
      * @param StoreUserAvatarUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function avatar(UserEditAvatarRequest $request, StoreUserAvatarUseCase $useCase)
     {
-        $response = $useCase($request);
-        return response($response, 200);
+        if (!$useCase($request)) return err_response(['message' => config('errors.user.avatar.not_exists')], 400);
+        return response('{}', 200);
     }
 
     /**

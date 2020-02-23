@@ -6,59 +6,46 @@ use App\Models\User;
 
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * ユーザーのアバターの保存
+ *
+ * Class StoreUserAvatarUseCase
+ * @package App\UseCases
+ */
 class StoreUserAvatarUseCase
 {
     /**
-     * アバターの圧縮・保存とユーザーアバターのパス更新
      * @param $request
-     * @return String response
+     * @return string
      */
-    public function __invoke ($request)
+    public function __invoke($request)
     {
-        // 画像トリミング
-        $file = $this->getImage($request);
+        $file = $request->file('avatar');
+        if (is_null($file)) return false;
         $image = Image::make($file);
+
         $image = $this->trimImage($image)->encode('jpg');
 
-        //保存
         $publicFilePath = $this->storeImage($image);
         
-        // 過去のユーザーアバター画像を削除
         $user = User::where('id', user()->id)->first();
-        $this->deleteOldAvatar($user);
+        $this->deleteOldAvatar($user->avatar);
 
-        // 画像パスをユーザーデータに反映
         $user->avatar = $publicFilePath;
         $user->save();
 
-        return '{}';
+        return true;
     }
 
     /**
-     * 画像の取得 (無かったら400)
-     * @param $request
-     * @return file
-     */
-    protected function getImage ($request)
-    {
-        $file = $request->file("avatar");
-        if (null === $file ) {
-            $response = response('{}', 400);
-            throw new HttpResponseException($response);
-        }
-        return $file;
-    }
-
-     /**
      * 画像のトリミング
      *
      * @param $image
      * @return mixed
      */
-    protected function trimImage ($image)
+    protected function trimImage($image)
     {
         if ($image->width() > $image->height()) {
             return $image->resize(1024, null, function ($constraint) {
@@ -73,14 +60,13 @@ class StoreUserAvatarUseCase
     }
 
     /**
-     * 画像の保存
+     * 新しいアバターの保存
+     *
      * @param $image
-     * @return String public path
+     * @return string
      */
-    protected function storeImage ($image)
+    protected function storeImage($image)
     {
-        // // 画像をstorageに保存
-        // $image = Image::make($images[$i]);
         $fileName = Str::random(16) . '.jpg';
         $storageFilePath = storage_path("app/public/avatars/custom/$fileName");
         $image->save($storageFilePath);
@@ -89,15 +75,14 @@ class StoreUserAvatarUseCase
     }
 
     /**
-     * ユーザーの元アバターを削除
-     * @param User $user
-     * @return void
+     * 元のアバターを削除
+     *
+     * @param $avatar
      */
-    function deleteOldAvatar ($user)
+    protected function deleteOldAvatar($avatar)
     {
-        $nowAvatar = $user->avatar;
-        $paths = explode('/', $nowAvatar);
-        if ('default' !== $paths[count($paths) -2]) {
+        $paths = explode('/', $avatar);
+        if ($paths[count($paths) -2] !== 'default') {
             Storage::delete('/public/avatars/custom/'. $paths[count($paths) - 1] );
         }
     }

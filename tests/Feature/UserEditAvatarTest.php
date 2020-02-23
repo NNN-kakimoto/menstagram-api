@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\Feature\DataProviders\UserEditAvatarDataProvider;
 use Tests\TestCase;
@@ -67,29 +65,6 @@ class UserEditAvatarTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
-    }
-
-    /**
-     * 異常系(HTTPメソッド)
-     *
-     * @test
-     * @dataProvider methodProvider
-     * @param $method
-     */
-    public function failMethodsCase($method)
-    {
-        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
-
-        $file = UploadedFile::fake()->image('test.jpg', 100, 100);
-
-        $response = $this
-                        ->withHeader('Authorization', "Bearer $accessToken")
-                        ->$method('/api/v1/user/edit/avatar', [
-                            'avatar' => $file,
-                        ]);
-
-        $response
-            ->assertStatus(405);
+            ->assertJsonValidationErrors(['avatar']);
     }
 }

@@ -25,17 +25,4 @@ trait UserEditAvatarDataProvider
             '画像サイズが上限を超えているパターン' => [UploadedFile::fake()->image('test.jpg', 100, 100)->size(5121)],
         ];
     }
-
-    /**
-     * 異常系(HTTPメソッド)のテストデータの定義
-     * 
-     * @return array
-     */
-    public function methodProvider()
-    {
-        return [
-            'POSTメソッドのパターン' => ['post'],
-            'PATCHメソッドのパターン' => ['patch']
-        ];
-    }
 }

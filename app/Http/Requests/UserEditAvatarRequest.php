@@ -4,8 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
+/**
+ * ユーザーのアバターの変更
+ *
+ * Class UserEditAvatarRequest
+ * @package App\Http\Requests
+ */
 class UserEditAvatarRequest extends FormRequest
 {
     /**
@@ -26,11 +31,7 @@ class UserEditAvatarRequest extends FormRequest
     public function rules()
     {
         return [
-            'avatar' => [
-                'bail',
-                'image',
-                'max:5120'
-            ]
+            'avatar' => ['image', 'max:5120', ],
         ];
     }
 
