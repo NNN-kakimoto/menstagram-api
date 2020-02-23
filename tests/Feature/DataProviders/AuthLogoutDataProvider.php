@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\DataProviders;
 
+use Illuminate\Support\Str;
+
 /**
  * ユーザーのログアウト
  *
@@ -19,9 +21,8 @@ trait AuthLogoutDataProvider
     {
         return [
             'アクセストークンが無いパターン' => [null],
-            'AuthorizationヘッダがBearerではないパターン' => ['takashi'],
-            'アクセストークンが短いパターン' => ['Bearer takashi'],
-            'アクセストークンが長いパターン' => ['Bearer takashitakashitakashitakashitakashitakashitakashitakashitakashitakashi'],
+            'アクセストークンの形式が不正であるパターン' => ['takashi'],
+            'アクセストークンが存在しないパターン' => [Str::random(80)],
         ];
     }
 }

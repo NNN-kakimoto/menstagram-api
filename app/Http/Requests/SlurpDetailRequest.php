@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * スラープ詳細
@@ -32,16 +31,27 @@ class SlurpDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'slurp_id' => ['bail', 'required', 'integer', 'exists:slurps,id', ],
+            'slurp_id' => ['required', 'integer', 'exists:slurps,id', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'slurp_id.required' => config('errors.slurp.id.required'),
+            'slurp_id.integer'  => config('errors.slurp.id.integer'),
+            'slurp_id.exists'   => config('errors.slurp.id.exists'),
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }

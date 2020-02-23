@@ -20,23 +20,26 @@ down:
 	docker-sync stop
 	docker-compose down
 
-db:
-	docker-compose exec php php artisan migrate:fresh --seed
+ps:
+	docker-compose ps
 
 sh:
 	docker-compose exec php bash
 
-ps:
-	docker-compose ps
+db:
+	docker-compose exec php php artisan migrate:fresh --seed
+
+test:
+	docker-compose exec php vendor/bin/phpunit
+
+tinker:
+	docker-compose exec php php artisan tinker
 
 dbg:
 	open http://localhost:8000/telescope
 
 qual:
 	php artisan insights
-
-test:
-	docker-compose exec php vendor/bin/phpunit
 
 tunnel:
 	ssh -R 80:localhost:8000 ssh.localhost.run

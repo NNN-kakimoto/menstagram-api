@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * ユーザーの編集
@@ -32,17 +31,29 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name' => ['bail', 'string', 'between:1,16', ],
-            'biography' => ['bail', 'max:128', ],
+            'user_name' => ['string', 'between:1,16', ],
+            'biography' => ['max:128', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_name.string'  => config('errors.user.user_name.string'),
+            'user_name.between' => config('errors.user.user_name.between'),
+
+            'biography.max'     => config('errors.user.biography.max'),
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * ユーザーの登録
@@ -32,19 +31,43 @@ class AuthRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'   => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'unique:users', ],
-            'user_name' => ['bail', 'required', 'string', 'min:1', 'max:16', ],
-            'email'     => ['bail', 'required', 'email', 'unique:users', ],
-            'password'  => ['bail', 'required', 'string', 'min:8', ],
+            'user_id'   => ['required', 'regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', 'unique:users', ],
+            'user_name' => ['required', 'string', 'between:1,16', ],
+            'email'     => ['required', 'email', 'unique:users', ],
+            'password'  => ['required', 'string', 'min:8', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_id.required'   => config('errors.user.user_id.required'),
+            'user_id.regex'      => config('errors.user.user_id.regex'),
+            'user_id.between'    => config('errors.user.user_id.between'),
+            'user_id.unique'     => config('errors.user.user_id.unique'),
+
+            'user_name.required' => config('errors.user.user_name.required'),
+            'user_name.string'   => config('errors.user.user_name.string'),
+            'user_name.between'  => config('errors.user.user_name.between'),
+
+            'email.required'     => config('errors.user.email.required'),
+            'email.email'        => config('errors.user.email.email'),
+            'email.unique'       => config('errors.user.email.unique'),
+
+            'password.required' => config('errors.user.password.required'),
+            'password.string'   => config('errors.user.password.string'),
+            'password.min'      => config('errors.user.password.min'),
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }

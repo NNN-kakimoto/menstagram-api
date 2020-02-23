@@ -82,6 +82,6 @@ class SlurpTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['image1']);
     }
 }
