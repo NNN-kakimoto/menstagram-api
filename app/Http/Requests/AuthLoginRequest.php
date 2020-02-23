@@ -4,12 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * ユーザーのログイン
  *
- * Class LoginUserRequest
+ * Class AuthLoginRequest
  * @package App\Http\Requests
  */
 class AuthLoginRequest extends FormRequest
@@ -32,17 +31,32 @@ class AuthLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'  => ['bail', 'required', 'regex:/^[a-zA-Z0-9_]+$/', 'min:1', 'max:16', 'exists:users', ],
-            'password' => ['bail', 'required', 'string', 'min:8', ],
+            'user_id'  => ['required', 'regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', ],
+            'password' => ['required', 'string', 'min:8', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_id.required'  => config('errors.user.user_id.required'),
+            'user_id.regex'     => config('errors.user.user_id.regex'),
+            'user_id.between'   => config('errors.user.user_id.between'),
+
+            'password.required' => config('errors.user.password.required'),
+            'password.string'   => config('errors.user.password.string'),
+            'password.min'      => config('errors.user.password.min'),
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }

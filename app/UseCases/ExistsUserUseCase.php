@@ -21,7 +21,7 @@ class ExistsUserUseCase
     public function __invoke($userId, $password)
     {
         $user = User::where('user_id', $userId)->first();
-        if (Hash::check($password, $user->password)) return true;
-        return false;
+        if (is_null($user) || !Hash::check($password, $user->password)) return false;
+        return true;
     }
 }

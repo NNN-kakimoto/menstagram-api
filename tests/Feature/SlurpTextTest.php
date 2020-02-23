@@ -84,7 +84,30 @@ class SlurpTextTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['slurp_id']);
+    }
+
+    /**
+     * 異常系(スラープの書き込み権限無し)
+     *
+     * @param $slurpId
+     * @dataProvider forbidSlurpProvider
+     * @test
+     */
+    public function failForbidSlurpCase($slurpId)
+    {
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->post('/api/v1/slurp/text', [
+                            'slurp_id' => $slurpId,
+                            'text'     => 'test',
+                        ]);
+
+        $response
+            ->assertStatus(403)
+            ->assertJsonValidationErrors(['message']);
     }
 
     /**
@@ -117,6 +140,6 @@ class SlurpTextTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['text']);
     }
 }

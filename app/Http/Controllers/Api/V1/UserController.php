@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserEditAvatarRequest;
 use App\Http\Requests\UserFollowerRequest;
 use App\Http\Requests\UserPostFollowRequest;
 use App\Http\Requests\UserGetFollowRequest;
@@ -19,6 +20,7 @@ use App\UseCases\FetchUserProfileUseCase;
 use App\UseCases\FollowUseCase;
 use App\UseCases\UnfollowUseCase;
 use App\UseCases\UpdateUserUseCase;
+use App\UseCases\StoreUserAvatarUseCase;
 
 /**
  * ユーザー系API
@@ -69,6 +71,19 @@ class UserController extends Controller
     }
 
     /**
+     * ユーザーのアバターの変更
+     *
+     * @param UserEditAvatarRequest $request
+     * @param StoreUserAvatarUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function avatar(UserEditAvatarRequest $request, StoreUserAvatarUseCase $useCase)
+    {
+        if (!$useCase($request)) return err_response(['message' => config('errors.user.avatar.not_exists')], 400);
+        return response('{}', 200);
+    }
+
+    /**
      * ヤムしたスラープ一覧
      *
      * @param UserYumsRequest $request
@@ -90,7 +105,8 @@ class UserController extends Controller
      */
     public function postFollow(UserPostFollowRequest $request, FollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        // TODO: forbidをalreadyとsameで分けたい
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.forbid')], 400);
         return response('{}', 200);
     }
 
@@ -103,7 +119,8 @@ class UserController extends Controller
      */
     public function unfollow(UserUnfollowRequest $request, UnfollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        // TODO: forbidをalreadyとsameで分けたい
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.forbid')], 400);
         return response('{}', 200);
     }
 

@@ -6,12 +6,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * ユーザーの編集
+ * ユーザーのアバターの変更
  *
- * Class UserEditRequest
+ * Class UserEditAvatarRequest
  * @package App\Http\Requests
  */
-class UserEditRequest extends FormRequest
+class UserEditAvatarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +31,7 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name' => ['string', 'between:1,16', ],
-            'biography' => ['max:128', ],
+            'avatar' => ['image', 'max:5120', ],
         ];
     }
 
@@ -42,17 +41,15 @@ class UserEditRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_name.string'  => config('errors.user.user_name.string'),
-            'user_name.between' => config('errors.user.user_name.between'),
-
-            'biography.max'     => config('errors.user.biography.max'),
+            'avatar.image' => config('errors.user.avatar.image'),
+            'avatar.max'   => config('errors.user.avatar.max'),
         ];
     }
 
-    /**
+     /**
      * @param Validator $validator
      */
-    protected function failedValidation(Validator $validator)
+    public function failedValidation(Validator $validator)
     {
         err_response($validator->errors()->toArray(), 400);
     }
