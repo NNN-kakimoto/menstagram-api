@@ -34,12 +34,22 @@ class UserEditAvatarRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'avatar.image' => config('errors.user.avatar.image'),
+            'avatar.max'   => config('errors.user.avatar.max'),
+        ];
+    }
+
      /**
      * @param Validator $validator
      */
     public function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }
