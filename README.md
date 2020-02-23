@@ -29,6 +29,7 @@ $ make ps       // コンテナの状態(プロセス)の確認
 $ make sh       // Bashの起動
 $ make db       // DBの作り直し
 $ make test     // テスト(PHPUnit)の実行
+$ make tinker   // Laravel Tinkerの起動
 $ make dbg      // デバッガ(Telescope)の起動
 $ make qual     // 品質チェックツール(PHP Insights)の起動
 $ make tunnel   // localhost.runで公開

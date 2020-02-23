@@ -156,7 +156,7 @@ class UserGetFollowTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['user_id']);
     }
 
     /**
@@ -178,7 +178,7 @@ class UserGetFollowTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['follow_id']);
     }
 
     /**
@@ -200,6 +200,6 @@ class UserGetFollowTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['type']);
     }
 }

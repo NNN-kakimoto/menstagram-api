@@ -48,20 +48,6 @@ class AuthLoginTest extends TestCase
     }
 
     /**
-     * 異常系(ベース)
-     *
-     * @param $user
-     */
-    protected function failBaseCase($user)
-    {
-        $response = $this->post('/api/v1/auth/login', $user);
-
-        $response
-            ->assertStatus(400)
-            ->assertJsonStructure([]);
-    }
-
-    /**
      * 異常系(ユーザーID)
      *
      * @test
@@ -70,12 +56,14 @@ class AuthLoginTest extends TestCase
      */
     public function failUserIdCase($userId)
     {
-        $user = [
+        $response = $this->post('/api/v1/auth/login', [
             'user_id'  => $userId,
             'password' => 'menstagram',
-        ];
+        ]);
 
-        $this->failBaseCase($user);
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['user_id']);
     }
 
     /**
@@ -87,11 +75,33 @@ class AuthLoginTest extends TestCase
      */
     public function failPasswordCase($password)
     {
-        $user = [
+        $response = $this->post('/api/v1/auth/login', [
             'user_id'  => $this->users[0]->user_id,
             'password' => $password,
-        ];
+        ]);
 
-        $this->failBaseCase($user);
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['password']);
+    }
+
+    /**
+     * 異常系(ユーザーIDとパスワード)
+     *
+     * @test
+     * @dataProvider userIdAndPasswordProvider
+     * @param $userId
+     * @param $password
+     */
+    public function failUserIdAndPasswordCase($userId, $password)
+    {
+        $response = $this->post('/api/v1/auth/login', [
+            'user_id'  => $userId,
+            'password' => $password,
+        ]);
+
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['message']);
     }
 }

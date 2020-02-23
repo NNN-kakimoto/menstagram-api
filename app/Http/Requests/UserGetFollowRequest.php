@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * フォロー一覧
@@ -32,18 +31,34 @@ class UserGetFollowRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'   => ['bail', 'string', 'min:1', 'max:16', 'exists:users,user_id', ],
-            'follow_id' => ['bail', 'integer', 'exists:follows,id', ],
-            'type'      => ['bail', 'in:old,new', ],
+            'user_id'   => ['regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', 'exists:users,user_id', ],
+            'follow_id' => ['integer', 'exists:follows,id', ],
+            'type'      => ['in:old,new', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'user_id.regex'     => config('errors.user.user_id.regex'),
+            'user_id.between'   => config('errors.user.user_id.between'),
+            'user_id.exists'    => config('errors.user.user_id.exists'),
+
+            'follow_id.integer' => config('errors.follow.id.integer'),
+            'follow_id.exists'  => config('errors.follow.id.exists'),
+
+            'type.in'           => config('errors.general.type.in'),
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }

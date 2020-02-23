@@ -74,6 +74,6 @@ class AuthLogoutTest extends TestCase
 
         $response
             ->assertStatus(401)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['message']);
     }
 }

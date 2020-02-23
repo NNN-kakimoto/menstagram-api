@@ -72,7 +72,7 @@ class UserEditTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['user_name']);
     }
 
     /**
@@ -95,6 +95,6 @@ class UserEditTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['biography']);
     }
 }

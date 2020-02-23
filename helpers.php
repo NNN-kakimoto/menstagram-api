@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Models\User;
 
 /**
@@ -28,5 +29,15 @@ if (!function_exists('user')) {
         }
 
         return $user->first();
+    }
+}
+
+/**
+ * エラー時のレスポンスを生成
+ */
+if (!function_exists('err_response')) {
+    function err_response($content = ['message' => ''], $status = 400) {
+        $response['errors'] = $content;
+        throw new HttpResponseException(response($response, $status));
     }
 }
