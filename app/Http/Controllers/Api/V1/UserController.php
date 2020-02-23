@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserEditRequest;
+use App\Http\Requests\UserFolloweeRequest;
 use App\Http\Requests\UserFollowerRequest;
-use App\Http\Requests\UserPostFollowRequest;
-use App\Http\Requests\UserGetFollowRequest;
+use App\Http\Requests\UserFollowRequest;
 use App\Http\Requests\UserYumsRequest;
 use App\Http\Requests\UserSlurpsRequest;
 use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\UserUnfollowRequest;
+use App\UseCases\FetchFolloweeUseCase;
 use App\UseCases\FetchFollowerUseCase;
-use App\UseCases\FetchFollowUseCase;
 use App\UseCases\FetchUserYumsUseCase;
 use App\UseCases\FetchUserSlurpsUseCase;
 use App\UseCases\FetchUserProfileUseCase;
@@ -84,13 +84,14 @@ class UserController extends Controller
     /**
      * フォロー
      *
-     * @param UserPostFollowRequest $request
+     * @param UserFollowRequest $request
      * @param FollowUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
-    public function postFollow(UserPostFollowRequest $request, FollowUseCase $useCase)
+    public function follow(UserFollowRequest $request, FollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        // TODO: forbidをalreadyとsameで分けたい
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.forbid')], 400);
         return response('{}', 200);
     }
 
@@ -99,22 +100,23 @@ class UserController extends Controller
      *
      * @param UserUnfollowRequest $request
      * @param UnfollowUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function unfollow(UserUnfollowRequest $request, UnfollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        // TODO: forbidをalreadyとsameで分けたい
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.forbid')], 400);
         return response('{}', 200);
     }
 
     /**
-     * フォロー一覧
+     * フォロイー一覧
      *
-     * @param UserGetFollowRequest $request
-     * @param FetchFollowUseCase $useCase
+     * @param UserFolloweeRequest $request
+     * @param FetchFolloweeUseCase $useCase
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function getFollow(UserGetFollowRequest $request, FetchFollowUseCase $useCase)
+    public function followee(UserFolloweeRequest $request, FetchFolloweeUseCase $useCase)
     {
         $response = $useCase($request->user_id, $request->follow_id, $request->type);
         return response($response, 200);

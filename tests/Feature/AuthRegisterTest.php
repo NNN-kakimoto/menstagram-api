@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Tests\Feature\DataProviders\AuthRegisterDataProvider;
 use Tests\TestCase;
 
@@ -48,29 +49,7 @@ class AuthRegisterTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure(['access_token']);
 
-        $this->assertDatabaseHas('users', [
-            'user_id'   => $user['user_id'],
-            'user_name' => $user['user_name'],
-            'email'     => $user['email'],
-        ]);
-
-        $this->users->where('user_id', $user['user_id'])->each->delete();
-    }
-
-    /**
-     * 異常系(ベース)
-     *
-     * @param $user
-     * @param $userId
-     */
-    protected function failBaseCase($user, $userId)
-    {
-        $response = $this->post('/api/v1/auth/register', $user);
-        $response
-            ->assertStatus(400)
-            ->assertJsonStructure([]);
-        $this->assertDatabaseMissing('users', $user);
-        $this->users->where('user_id', $userId)->each->delete();
+        $this->assertDatabaseHas('users', Arr::except($user, 'password'));
     }
 
     /**
@@ -89,7 +68,12 @@ class AuthRegisterTest extends TestCase
             'password'  => 'Menstagram9999',
         ];
 
-        $this->failBaseCase($user, $userId);
+        $response = $this->post('/api/v1/auth/register', $user);
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['user_id']);
+
+        $this->assertDatabaseMissing('users', Arr::except($user, 'password'));
     }
 
     /**
@@ -106,7 +90,12 @@ class AuthRegisterTest extends TestCase
             'password'  => 'Menstagram_9999',
         ];
 
-        $this->failBaseCase($user, $user['user_id']);
+        $response = $this->post('/api/v1/auth/register', $user);
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['user_name']);
+
+        $this->assertDatabaseMissing('users', Arr::except($user, 'password'));
     }
 
     /**
@@ -125,7 +114,12 @@ class AuthRegisterTest extends TestCase
             'password'  => 'Menstagram_9999',
         ];
 
-        $this->failBaseCase($user, $user['user_id']);
+        $response = $this->post('/api/v1/auth/register', $user);
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['email']);
+
+        $this->assertDatabaseMissing('users', Arr::except($user, 'password'));
     }
 
     /**
@@ -144,6 +138,11 @@ class AuthRegisterTest extends TestCase
             'password'  => $password,
         ];
 
-        $this->failBaseCase($user, $user['user_id']);
+        $response = $this->post('/api/v1/auth/register', $user);
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['password']);
+
+        $this->assertDatabaseMissing('users', Arr::except($user, 'password'));
     }
 }

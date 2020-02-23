@@ -55,12 +55,11 @@ class SlurpController extends Controller
      *
      * @param SlurpTextRequest $request
      * @param SlurpTextUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function text(SlurpTextRequest $request, SlurpTextUseCase $useCase)
     {
-        // TODO: バリデーション化したい
-        if (!$useCase($request)) return response('{}', 400);
+        if (!$useCase($request)) return err_response(['message' => config('errors.slurp.forbid')], 403);
         return response('{}', 200);
     }
 
@@ -69,11 +68,11 @@ class SlurpController extends Controller
      *
      * @param SlurpYumRequest $request
      * @param YumUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function yum(SlurpYumRequest $request, YumUseCase $useCase)
     {
-        if (!$useCase($request->slurp_id)) return response('{}', 400);
+        if (!$useCase($request->slurp_id)) return err_response(['message' => config('errors.slurp.already')], 400);
         return response('{}', 200);
     }
 
@@ -82,11 +81,11 @@ class SlurpController extends Controller
      *
      * @param SlurpUnyumRequest $request
      * @param UnyumUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function unyum(SlurpUnyumRequest $request, UnyumUseCase $useCase)
     {
-        if(!$useCase($request->slurp_id)) return response('{}', 400);
+        if(!$useCase($request->slurp_id)) return err_response(['message' => config('errors.slurp.yet')], 400);
         return response('{}', 200);
     }
 
@@ -100,13 +99,11 @@ class SlurpController extends Controller
     public function detail(SlurpDetailRequest $request, FetchSlurpDetailUseCase $useCase)
     {
         $response = $useCase($request->slurp_id);
-        // TODO: バリデーション化したい
-        if (collect($response)->isEmpty()) return response('{}', 400);
         return response($response, 200);
     }
 
     /**
-     * ヤムしたユーザー一覧s
+     * ヤムしたユーザー一覧
      *
      * @param SlurpYumsRequest $request
      * @param FetchSlurpYumsUseCase $useCase

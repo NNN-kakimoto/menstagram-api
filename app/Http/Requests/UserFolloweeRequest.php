@@ -6,12 +6,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * ユーザーの編集
+ * フォロイー一覧
  *
- * Class UserEditRequest
+ * Class UserFolloweeRequest
  * @package App\Http\Requests
  */
-class UserEditRequest extends FormRequest
+class UserFolloweeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +31,9 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name' => ['string', 'between:1,16', ],
-            'biography' => ['max:128', ],
+            'user_id'   => ['regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', 'exists:users,user_id', ],
+            'follow_id' => ['integer', 'exists:follows,id', ],
+            'type'      => ['in:old,new', ],
         ];
     }
 
@@ -42,10 +43,14 @@ class UserEditRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_name.string'  => config('errors.user.user_name.string'),
-            'user_name.between' => config('errors.user.user_name.between'),
+            'user_id.regex'     => config('errors.user.user_id.regex'),
+            'user_id.between'   => config('errors.user.user_id.between'),
+            'user_id.exists'    => config('errors.user.user_id.exists'),
 
-            'biography.max'     => config('errors.user.biography.max'),
+            'follow_id.integer' => config('errors.follow.id.integer'),
+            'follow_id.exists'  => config('errors.follow.id.exists'),
+
+            'type.in'           => config('errors.general.type.in'),
         ];
     }
 

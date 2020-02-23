@@ -25,6 +25,26 @@ trait SlurpTextDataProvider
     }
 
     /**
+     * 異常系(スラープの書き込み権限無し)
+     *
+     * @return array
+     */
+    public function forbidSlurpProvider()
+    {
+        $slurp_id = 1;
+        foreach ($this->slurps as $slurp) {
+            if ($slurp->user_id !== 1) {
+                $slurp_id = $slurp->id;
+                break;
+            }
+        }
+
+        return [
+            'スラープの書き込み権限が無いパターン' => [$slurp_id],
+        ];
+    }
+
+    /**
      * 異常系(テキスト)
      *
      * @return array

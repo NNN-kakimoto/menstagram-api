@@ -82,7 +82,7 @@ class SlurpUnyumTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['slurp_id']);
     }
 
     /**
@@ -90,7 +90,7 @@ class SlurpUnyumTest extends TestCase
      *
      * @test
      */
-    public function failNotExistsCase()
+    public function failYetCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
         $slurpId = 1;
@@ -105,6 +105,6 @@ class SlurpUnyumTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['message']);
     }
 }

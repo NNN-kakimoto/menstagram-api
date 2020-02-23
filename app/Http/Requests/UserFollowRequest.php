@@ -6,12 +6,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * ユーザーの編集
+ * フォロー
  *
- * Class UserEditRequest
+ * Class UserFollowRequest
  * @package App\Http\Requests
  */
-class UserEditRequest extends FormRequest
+class UserFollowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +31,7 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name' => ['string', 'between:1,16', ],
-            'biography' => ['max:128', ],
+            'target_user_id' => ['required', 'regex:/^[a-zA-Z0-9_]+$/', 'between:1,16', 'exists:users,user_id', ],
         ];
     }
 
@@ -42,10 +41,10 @@ class UserEditRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_name.string'  => config('errors.user.user_name.string'),
-            'user_name.between' => config('errors.user.user_name.between'),
-
-            'biography.max'     => config('errors.user.biography.max'),
+            'target_user_id.required' => config('errors.follow.target_user_id.required'),
+            'target_user_id.regex'    => config('errors.follow.target_user_id.regex'),
+            'target_user_id.between'  => config('errors.follow.target_user_id.between'),
+            'target_user_id.exists'   => config('errors.follow.target_user_id.exists'),
         ];
     }
 

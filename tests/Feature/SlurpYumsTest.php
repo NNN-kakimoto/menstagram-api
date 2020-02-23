@@ -62,6 +62,6 @@ class SlurpYumsTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['slurp_id']);
     }
 }

@@ -154,7 +154,8 @@ class UserSlurpsTest extends TestCase
                         ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['user_id']);
     }
 
     /**
@@ -175,7 +176,8 @@ class UserSlurpsTest extends TestCase
                         ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['slurp_id']);
     }
 
     /**
@@ -197,6 +199,7 @@ class UserSlurpsTest extends TestCase
                         ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['type']);
     }
 }

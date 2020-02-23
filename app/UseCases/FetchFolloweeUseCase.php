@@ -5,12 +5,12 @@ namespace App\UseCases;
 use App\Models\Follow;
 
 /**
- * フォロー一覧の取得
+ * フォロイー一覧の取得
  *
- * Class FetchFollowUseCase
+ * Class FetchFolloweeUseCase
  * @package App\UseCases
  */
-class FetchFollowUseCase
+class FetchFolloweeUseCase
 {
     /**
      * @param null $userId
