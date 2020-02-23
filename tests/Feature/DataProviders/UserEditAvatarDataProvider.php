@@ -5,7 +5,7 @@ namespace Tests\Feature\DataProviders;
 use Illuminate\Http\UploadedFile;
 
 /**
- * 画像の送信
+ * ユーザーのアバター編集
  *
  * Trait UserEditAvatarDataProvider
  * @package Tests\Feature\DataProviders
@@ -17,7 +17,7 @@ trait UserEditAvatarDataProvider
      *
      * @return array
      */
-    public function imagesProvider()
+    public function avatarProvider()
     {
         return [
             '画像が含まれていないパターン' => [null],

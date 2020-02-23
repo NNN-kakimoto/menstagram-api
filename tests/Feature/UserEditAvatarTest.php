@@ -7,7 +7,8 @@ use Tests\Feature\DataProviders\UserEditAvatarDataProvider;
 use Tests\TestCase;
 
 /**
- * ユーザーアバター編集
+ * ユーザーのアバター編集
+ *
  * Class UserEditAvatarTest
  * @package Tests\Feature
  */
@@ -47,24 +48,42 @@ class UserEditAvatarTest extends TestCase
     }
 
     /**
-     * 異常系(画像)
+     * 異常系(アバター)
      *
      * @test
-     * @dataProvider imagesProvider
+     * @dataProvider avatarProvider
      * @param $file
      */
-    public function failImagesCase($file)
+    public function failAvatarCase($file)
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
 
         $response = $this
-            ->withHeader('Authorization', "Bearer $accessToken")
-            ->put('/api/v1/user/edit/avatar', [
-                'avatar' => $file,
-            ]);
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->put('/api/v1/user/edit/avatar', [
+                            'avatar' => $file,
+                        ]);
 
         $response
             ->assertStatus(400)
             ->assertJsonValidationErrors(['avatar']);
+    }
+
+    /**
+     * 異常系(Bodyなし)
+     *
+     * @test
+     */
+    public function failNoBodyCase()
+    {
+        $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
+
+        $response = $this
+                        ->withHeader('Authorization', "Bearer $accessToken")
+                        ->put('/api/v1/user/edit/avatar', []);
+
+        $response
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['message']);
     }
 }
