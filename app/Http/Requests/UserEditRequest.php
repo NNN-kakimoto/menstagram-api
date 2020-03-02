@@ -31,7 +31,7 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_name' => ['string', 'between:1,16', ],
+            'user_name' => ['required', 'string', 'between:1,16', ],
             'biography' => ['max:128', ],
         ];
     }
@@ -42,10 +42,11 @@ class UserEditRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_name.string'  => config('errors.user.user_name.string'),
-            'user_name.between' => config('errors.user.user_name.between'),
+            'user_name.required' => config('errors.user.user_name.required'),
+            'user_name.string'   => config('errors.user.user_name.string'),
+            'user_name.between'  => config('errors.user.user_name.between'),
 
-            'biography.max'     => config('errors.user.biography.max'),
+            'biography.max'      => config('errors.user.biography.max'),
         ];
     }
 
