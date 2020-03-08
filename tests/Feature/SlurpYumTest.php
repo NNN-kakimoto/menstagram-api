@@ -76,7 +76,7 @@ class SlurpYumTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['slurp_id']);
     }
 
     /**
@@ -84,7 +84,7 @@ class SlurpYumTest extends TestCase
      *
      * @test
      */
-    public function failAlreadyExistsCase()
+    public function failAlreadyCase()
     {
         $accessToken = 'sQCeW8BEu0OvPULE1phO79gcenQevsamL2TA9yDruTinCAG1yfbNZn9O2udONJgLHH6psVWihISvCCqW';
         $slurpId = 1;
@@ -105,6 +105,6 @@ class SlurpYumTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['message']);
     }
 }

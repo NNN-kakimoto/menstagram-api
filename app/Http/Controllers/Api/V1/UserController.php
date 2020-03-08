@@ -90,7 +90,8 @@ class UserController extends Controller
      */
     public function postFollow(UserPostFollowRequest $request, FollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        // TODO: forbidをalreadyとsameで分けたい
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.forbid')], 400);
         return response('{}', 200);
     }
 
@@ -103,7 +104,8 @@ class UserController extends Controller
      */
     public function unfollow(UserUnfollowRequest $request, UnfollowUseCase $useCase)
     {
-        if (!$useCase($request->target_user_id)) return response('{}', 400);
+        // TODO: forbidをalreadyとsameで分けたい
+        if (!$useCase($request->target_user_id)) return err_response(['message' => config('errors.follow.forbid')], 400);
         return response('{}', 200);
     }
 

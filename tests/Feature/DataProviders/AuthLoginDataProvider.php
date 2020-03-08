@@ -22,7 +22,6 @@ trait AuthLoginDataProvider
             'ユーザーIDが空文字のパターン' => [''],
             'ユーザーIDがa-zA-Z0-9の範囲に無いパターン' => ['めんすたぐらむ'],
             'ユーザーIDが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
-            'ユーザーIDの条件は満たしているが存在しないユーザーIDのパターン' => ['takashi'],
         ];
     }
 
@@ -37,6 +36,18 @@ trait AuthLoginDataProvider
             'パスワードが抜けているパターン' => [null],
             'パスワードが8文字よりも短いパターン' => ['mensta'],
             'パスワードを間違えているパターン' => ['takashi'],
+        ];
+    }
+
+    /**
+     * 異常系(ユーザーIDとパスワード)のテストデータの定義
+     *
+     * @return array
+     */
+    public function userIdAndPasswordProvider()
+    {
+        return [
+            'ユーザーIDとパスワードに一致するユーザーが存在しないパターン' => ['takashi', 'takashitakashi'],
         ];
     }
 }

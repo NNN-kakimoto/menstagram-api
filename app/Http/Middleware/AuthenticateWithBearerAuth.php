@@ -25,14 +25,14 @@ class AuthenticateWithBearerAuth
     public function handle($request, Closure $next)
     {
         $accessToken = $request->header('Authorization');
-        if (!$this->checkAccessTokenFormat($accessToken)) return response('{}', 401);
+        if (!$this->checkAccessTokenFormat($accessToken)) return err_response(['message' => config('errors.user.access_token.format')], 401);
 
         $accessToken = hash('sha256', Str::after($accessToken, 'Bearer '));
-        if (!$this->existsAccessToken($accessToken)) return response('{}', 401);
+        if (!$this->existsAccessToken($accessToken)) return err_response(['message' => config('errors.user.access_token.not_exists')], 401);
 
         if (!$this->checkAccessTokenDeadline($accessToken)) {
             $this->resetAccessToken($accessToken);
-            return response('{}', 401);
+            return err_response(['message' => config('errors.user.access_token.deadline')], 401);
         }
 
         return $next($request);

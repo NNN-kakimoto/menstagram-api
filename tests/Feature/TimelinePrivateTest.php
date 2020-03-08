@@ -154,7 +154,8 @@ class TimelinePrivateTest extends TestCase
                         ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['slurp_id']);
     }
 
     /**
@@ -176,6 +177,7 @@ class TimelinePrivateTest extends TestCase
                         ]);
 
         $response
-            ->assertStatus(400);
+            ->assertStatus(400)
+            ->assertJsonValidationErrors(['type']);
     }
 }

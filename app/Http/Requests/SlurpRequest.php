@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
  * スラープ
@@ -32,19 +31,38 @@ class SlurpRequest extends FormRequest
     public function rules()
     {
         return [
-            'image1' => ['bail', 'image', 'max:5120', ],
-            'image2' => ['bail', 'image', 'max:5120', ],
-            'image3' => ['bail', 'image', 'max:5120', ],
-            'image4' => ['bail', 'image', 'max:5120', ],
+            'image1' => ['image', 'max:5120', ],
+            'image2' => ['image', 'max:5120', ],
+            'image3' => ['image', 'max:5120', ],
+            'image4' => ['image', 'max:5120', ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'image1.image' => config('errors.slurp.image.image'),
+            'image1.max'   => config('errors.slurp.image.max'),
+
+            'image2.image' => config('errors.slurp.image.image'),
+            'image2.max'   => config('errors.slurp.image.max'),
+
+            'image3.image' => config('errors.slurp.image.image'),
+            'image3.max'   => config('errors.slurp.image.max'),
+
+            'image4.image' => config('errors.slurp.image.image'),
+            'image4.max'   => config('errors.slurp.image.max'),
         ];
     }
 
     /**
      * @param Validator $validator
      */
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        $response = response('{}', 400);
-        throw new HttpResponseException($response);
+        err_response($validator->errors()->toArray(), 400);
     }
 }

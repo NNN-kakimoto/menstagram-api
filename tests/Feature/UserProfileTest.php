@@ -65,6 +65,6 @@ class UserProfileTest extends TestCase
 
         $response
             ->assertStatus(400)
-            ->assertJsonStructure([]);
+            ->assertJsonValidationErrors(['user_id']);
     }
 }
