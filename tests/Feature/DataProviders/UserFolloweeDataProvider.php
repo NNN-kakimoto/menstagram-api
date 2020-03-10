@@ -3,12 +3,12 @@
 namespace Tests\Feature\DataProviders;
 
 /**
- * フォロー一覧
+ * フォロイー一覧
  *
- * Trait UserGetFollowDataProvider
+ * Trait UserFolloweeDataProvider
  * @package Tests\Feature\DataProviders
  */
-trait UserGetFollowDataProvider
+trait UserFolloweeDataProvider
 {
     /**
      * 正常系(type)のテストデータの定義

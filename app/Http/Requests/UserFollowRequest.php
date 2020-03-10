@@ -8,10 +8,10 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * フォロー
  *
- * Class UserPostFollowRequest
+ * Class UserFollowRequest
  * @package App\Http\Requests
  */
-class UserPostFollowRequest extends FormRequest
+class UserFollowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

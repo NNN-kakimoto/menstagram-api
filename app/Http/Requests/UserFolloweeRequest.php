@@ -6,12 +6,12 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * フォロー一覧
+ * フォロイー一覧
  *
- * Class UserGetFollowRequest
+ * Class UserFolloweeRequest
  * @package App\Http\Requests
  */
-class UserGetFollowRequest extends FormRequest
+class UserFolloweeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
