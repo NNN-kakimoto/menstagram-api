@@ -38,7 +38,7 @@ class UserEditAvatarTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->put('/api/v1/user/edit/avatar', [
+                        ->post('/api/v1/user/edit/avatar', [
                             'avatar' => $file,
                         ]);
 
@@ -60,7 +60,7 @@ class UserEditAvatarTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->put('/api/v1/user/edit/avatar', [
+                        ->post('/api/v1/user/edit/avatar', [
                             'avatar' => $file,
                         ]);
 
@@ -80,7 +80,7 @@ class UserEditAvatarTest extends TestCase
 
         $response = $this
                         ->withHeader('Authorization', "Bearer $accessToken")
-                        ->put('/api/v1/user/edit/avatar', []);
+                        ->post('/api/v1/user/edit/avatar', []);
 
         $response
             ->assertStatus(400)
