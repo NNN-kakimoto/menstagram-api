@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Follow;
 use App\Models\User;
-use Tests\Feature\DataProviders\UserPostFollowDataProvider;
+use Tests\Feature\DataProviders\UserFollowDataProvider;
 use Tests\TestCase;
 
 /**
@@ -13,9 +13,9 @@ use Tests\TestCase;
  * Class UserFollowTest
  * @package Tests\Feature
  */
-class UserPostFollowTest extends TestCase
+class UserFollowTest extends TestCase
 {
-    use UserPostFollowDataProvider;
+    use UserFollowDataProvider;
 
     protected $users;
     protected $follows;

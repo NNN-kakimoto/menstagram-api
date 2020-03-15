@@ -5,10 +5,10 @@ namespace Tests\Feature\DataProviders;
 /**
  * フォロー
  *
- * Trait UserPostFollowDataProvider
+ * Trait UserFollowDataProvider
  * @package Tests\Feature\DataProviders
  */
-trait UserPostFollowDataProvider
+trait UserFollowDataProvider
 {
     /**
      * 異常系(フォロー対象のユーザーID)のテストデータの定義

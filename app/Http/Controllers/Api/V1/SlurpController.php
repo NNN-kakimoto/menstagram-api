@@ -55,7 +55,7 @@ class SlurpController extends Controller
      *
      * @param SlurpTextRequest $request
      * @param SlurpTextUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function text(SlurpTextRequest $request, SlurpTextUseCase $useCase)
     {
@@ -68,7 +68,7 @@ class SlurpController extends Controller
      *
      * @param SlurpYumRequest $request
      * @param YumUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function yum(SlurpYumRequest $request, YumUseCase $useCase)
     {
@@ -81,7 +81,7 @@ class SlurpController extends Controller
      *
      * @param SlurpUnyumRequest $request
      * @param UnyumUseCase $useCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function unyum(SlurpUnyumRequest $request, UnyumUseCase $useCase)
     {

@@ -52,6 +52,10 @@ class UserProfileRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        err_response($validator->errors()->toArray(), 400);
+        if (array_key_exists('Exists', $validator->failed()['user_id'])) {
+            err_response($validator->errors()->toArray(), 404);
+        } else {
+            err_response($validator->errors()->toArray(), 400);
+        }
     }
 }

@@ -37,7 +37,7 @@ class AuthController extends Controller
      * @param AuthLoginRequest $request
      * @param ExistsUserUseCase $existsUserUseCase
      * @param LoginUserUseCase $loginUserUseCase
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
      */
     public function login(AuthLoginRequest $request, ExistsUserUseCase $existsUserUseCase, LoginUserUseCase $loginUserUseCase)
     {
