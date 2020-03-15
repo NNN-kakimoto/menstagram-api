@@ -3,6 +3,7 @@
 Route::get('/user/profile', 'UserController@profile');
 Route::get('/user/slurps', 'UserController@slurps');
 Route::patch('/user/edit', 'UserController@edit');
+Route::put('/user/edit/avatar', 'UserController@avatar');
 Route::get('/user/yums', 'UserController@yums');
 Route::post('/user/follow', 'UserController@follow');
 Route::post('/user/unfollow', 'UserController@unfollow');
