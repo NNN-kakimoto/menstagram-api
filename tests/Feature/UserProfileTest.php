@@ -72,7 +72,7 @@ class UserProfileTest extends TestCase
      * 異常系(ユーザーIDが存在しない)
      *
      * @test
-     * @dataProvider
+     * @dataProvider userIdNotFoundProvider
      * @param $userId
      */
     public function failUserIdNotFoundCase($userId)
