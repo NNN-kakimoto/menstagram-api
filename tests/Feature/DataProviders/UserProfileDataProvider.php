@@ -22,6 +22,17 @@ trait UserProfileDataProvider
             'ユーザーIDが空文字のパターン' => [''],
             'ユーザーIDがa-zA-Z0-9の範囲に無いパターン' => ['めんすたぐらむ'],
             'ユーザーIDが16文字を超えているパターン' => ['menstagraaaaaaaam'], // 17文字
+        ];
+    }
+
+    /**
+     * 異常系(ユーザーIDが存在しない)
+     *
+     * @return array
+     */
+    public function userIdNotFoundProvider()
+    {
+        return [
             'ユーザーIDの条件は満たしているが存在しないユーザーIDのパターン' => ['takashi'],
         ];
     }
