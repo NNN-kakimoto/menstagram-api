@@ -9,6 +9,7 @@ use App\Http\Requests\SlurpYumsRequest;
 use App\Http\Requests\SlurpRequest;
 use App\Http\Requests\SlurpTextRequest;
 use App\Http\Requests\SlurpUnyumRequest;
+use App\Http\Requests\SlurpDeleteRequest;
 use App\UseCases\FetchSlurpDetailUseCase;
 use App\UseCases\FetchSlurpYumsUseCase;
 use App\UseCases\JudgeRamenUseCase;
@@ -18,6 +19,7 @@ use App\UseCases\SlurpUseCase;
 use App\UseCases\PreprocessImagesUseCase;
 use App\UseCases\StoreImagesUseCase;
 use App\UseCases\UnyumUseCase;
+use App\UseCases\DeleteSlurpUseCase;
 
 /**
  * スラープ系API
@@ -113,5 +115,19 @@ class SlurpController extends Controller
     {
         $response = $useCase($request->slurp_id);
         return response($response, 200);
+    }
+
+    /**
+     * スラープ削除
+     * 
+     * @param SlurpDeleteRequest $request
+     * @param  DeleteSlurpUseCase $useCase
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function delete(SlurpDeleteRequest $request, DeleteSlurpUseCase $useCase)
+    {
+        // 自分のものではないスラープ -> 削除できないスラープ
+        if(!$useCase($request->slurp_id)) return err_response(['message' => config('errors.slurp.cannot_delete')], 400);
+        return response('{}', 200);
     }
 }
