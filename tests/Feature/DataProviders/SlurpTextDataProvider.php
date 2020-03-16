@@ -31,16 +31,18 @@ trait SlurpTextDataProvider
      */
     public function forbidSlurpProvider()
     {
-        $slurp_id = 1;
-        foreach ($this->slurps as $slurp) {
-            if ($slurp->user_id !== 1) {
-                $slurp_id = $slurp->id;
-                break;
+        $slurpId = 1;
+        if (is_array($this->slurps)) {
+            foreach ($this->slurps as $slurp) {
+                if ($slurp->user_id !== 1) {
+                    $slurpId = $slurp->id;
+                    break;
+                }
             }
         }
 
         return [
-            'スラープの書き込み権限が無いパターン' => [$slurp_id],
+            'スラープの書き込み権限が無いパターン' => [$slurpId],
         ];
     }
 
